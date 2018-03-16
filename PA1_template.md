@@ -20,12 +20,32 @@ This zipped file contains a comma separated file with 3 fields:
   
 ## Loading and preprocessing the data
   
-```{r}
+
+```r
 ### Load libraries required
 library(plyr)
 library(ggplot2)
 library(lubridate)
+```
 
+```
+## 
+## Attaching package: 'lubridate'
+```
+
+```
+## The following object is masked from 'package:plyr':
+## 
+##     here
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     date
+```
+
+```r
 ### Check if file exists
 if (!file.exists("activity.zip")) {
   stop("File does not exist")
@@ -40,7 +60,8 @@ activity$date <- as.Date(activity$date, "%Y-%m-%d")
   
 ## What is the mean total number of steps taken per day?
   
-```{r}
+
+```r
 ### Create a new data frame with the the total number of steps per day
 dailySteps <- ddply(activity, .(date), summarise, steps = sum(steps))
 
@@ -52,15 +73,25 @@ qplot(steps, data = dailySteps) +
              col = "green") +
   geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), 
              col = "blue")
+```
 
 ```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 8 rows containing non-finite values (stat_bin).
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
   
 ## What is the average daily activity pattern?
   
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis)
 and the average number of steps taken, averaged across all days (y-axis)
   
-```{r}
+
+```r
 ### Create a new data frame with the average number of steps for each 5-minute
 ### interval, across all days for each interval
 averageSteps <- ddply(activity, .(interval), summarise, 
@@ -69,31 +100,42 @@ averageSteps <- ddply(activity, .(interval), summarise,
 ### Create a time series plot
 qplot(interval, average, data = averageSteps, geom = "line", 
       xlab = "Time Interval", ylab = "Average Steps")
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
   
 Which 5-minute interval, on average across all the days in the dataset, 
 contains the maximum number of steps?
   
-```{r maxIntervalCompute}
 
+```r
 maxInterval <- averageSteps[averageSteps$average == max(averageSteps$average), 1]
 print(maxInterval)
+```
 
 ```
+## [1] 835
+```
   
-The interval with the maximum number of steps is `r maxInterval`.
+The interval with the maximum number of steps is 835.
   
 ## Imputing missing values
   
 Replace missing values with the average for that interval over all the days
   
-```{r}
+
+```r
 ### Calculate and report the total number of missing values in the dataset
 ### (i.e. the total number of rows with NAs)
 missing <- nrow(activity[is.na(activity$steps), ])
 print(missing)
+```
 
+```
+## [1] 2304
+```
+
+```r
 ### Fill in the missing values by using the mean for that interval
 ### First re-calculate the average steps for each interval over all the days
 averageSteps <- ddply(activity, .(interval), summarise, 
@@ -109,12 +151,12 @@ for (i in 1:nrow(activityNoNA)) {
   }
   
 }
-
 ```
   
 Explore whether there is an impact from missing values
   
-```{r}
+
+```r
 ### Create a new data frame with the the total number of steps per day
 dailyStepsNoNA <- ddply(activityNoNA, .(date), summarise, steps = sum(steps))
 
@@ -125,22 +167,39 @@ qplot(steps, data = dailyStepsNoNA) +
              col = "green") +
   geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), 
              col = "blue")
+```
 
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
+```r
 ### Compare the mean and median daily steps before and after removing NAs
 meanDiff <- mean(dailyStepsNoNA$steps, na.rm = TRUE) - mean(dailySteps$steps, na.rm = TRUE)
 print(meanDiff)
-
-medianDiff <- median(dailyStepsNoNA$steps, na.rm = TRUE) - median(dailySteps$steps, na.rm = TRUE)
-print(medianDiff)
+```
 
 ```
+## [1] 0
+```
+
+```r
+medianDiff <- median(dailyStepsNoNA$steps, na.rm = TRUE) - median(dailySteps$steps, na.rm = TRUE)
+print(medianDiff)
+```
+
+```
+## [1] 1.188679
+```
   
-The difference in the means, before and after removing missing values, is `r meanDiff` and the difference in medians is `r medianDiff`.
+The difference in the means, before and after removing missing values is 0 and the difference in medians is 1.1886792.
 
 ## Are there differences in activity patterns between weekdays and weekends?
   
-```{r}
 
+```r
 ### Create a new factor variable in the dataset with two levels
 ### - "weekday" and "weekend" indicating whether a given date is a weekday or
 ### weekend day
@@ -172,5 +231,6 @@ par(mfrow = c(2,1))
 ### Create the plot using 2 facets
 qplot(interval, average, data = averageStepsNoNA, facets = period~., 
       geom = "line", xlab = "Interval", ylab = "Number of steps")
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
