@@ -11,7 +11,7 @@ This assignment makes use of data from a personal activity monitoring device. Th
 
 # Data File
 
-## activity.zip
+### activity.zip
 
 This zipped file contains a comma separated file with 3 fields:  
 - **date** is the day in the 2 month period for the measurement  
@@ -21,6 +21,7 @@ This zipped file contains a comma separated file with 3 fields:
 ## Loading and preprocessing the data
   
 ```{r}
+
 ### Load libraries required
 library(plyr)
 library(ggplot2)
@@ -41,17 +42,14 @@ activity$date <- as.Date(activity$date, "%Y-%m-%d")
 ## What is the mean total number of steps taken per day?
   
 ```{r}
+
 ### Create a new data frame with the the total number of steps per day
 dailySteps <- ddply(activity, .(date), summarise, steps = sum(steps))
 
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
 ### line for the median
 
-qplot(steps, data = dailySteps) + 
-  geom_vline(data = dailySteps, xintercept = mean(dailySteps$steps, na.rm = TRUE), 
-             col = "green") +
-  geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), 
-             col = "blue")
+qplot(steps, data = dailySteps, xlab = "Total steps per day", ylab = "Frequency")  + geom_vline(data = dailySteps, xintercept = mean(dailySteps$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), col = "blue")
 
 ```
   
@@ -61,6 +59,7 @@ Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis)
 and the average number of steps taken, averaged across all days (y-axis)
   
 ```{r}
+
 ### Create a new data frame with the average number of steps for each 5-minute
 ### interval, across all days for each interval
 averageSteps <- ddply(activity, .(interval), summarise, 
@@ -77,6 +76,7 @@ contains the maximum number of steps?
   
 ```{r maxIntervalCompute}
 
+### Find the interval with the maximum number of steps
 maxInterval <- averageSteps[averageSteps$average == max(averageSteps$average), 1]
 print(maxInterval)
 
@@ -89,6 +89,7 @@ The interval with the maximum number of steps is `r maxInterval`.
 Replace missing values with the average for that interval over all the days
   
 ```{r}
+
 ### Calculate and report the total number of missing values in the dataset
 ### (i.e. the total number of rows with NAs)
 missing <- nrow(activity[is.na(activity$steps), ])
@@ -115,16 +116,13 @@ for (i in 1:nrow(activityNoNA)) {
 Explore whether there is an impact from missing values
   
 ```{r}
+
 ### Create a new data frame with the the total number of steps per day
 dailyStepsNoNA <- ddply(activityNoNA, .(date), summarise, steps = sum(steps))
 
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
 ### line for the median
-qplot(steps, data = dailyStepsNoNA) + 
-  geom_vline(data = dailyStepsNoNA, xintercept = mean(dailyStepsNoNA$steps, na.rm = TRUE), 
-             col = "green") +
-  geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), 
-             col = "blue")
+qplot(steps, data = dailyStepsNoNA) + geom_vline(data = dailyStepsNoNA, xintercept = mean(dailyStepsNoNA$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), col = "blue")
 
 ### Compare the mean and median daily steps before and after removing NAs
 meanDiff <- mean(dailyStepsNoNA$steps, na.rm = TRUE) - mean(dailySteps$steps, na.rm = TRUE)

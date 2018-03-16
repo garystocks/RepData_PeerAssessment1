@@ -11,7 +11,7 @@ This assignment makes use of data from a personal activity monitoring device. Th
 
 # Data File
 
-## activity.zip
+### activity.zip
 
 This zipped file contains a comma separated file with 3 fields:  
 - **date** is the day in the 2 month period for the measurement  
@@ -68,11 +68,7 @@ dailySteps <- ddply(activity, .(date), summarise, steps = sum(steps))
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
 ### line for the median
 
-qplot(steps, data = dailySteps) + 
-  geom_vline(data = dailySteps, xintercept = mean(dailySteps$steps, na.rm = TRUE), 
-             col = "green") +
-  geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), 
-             col = "blue")
+qplot(steps, data = dailySteps, xlab = "Total steps per day", ylab = "Frequency")  + geom_vline(data = dailySteps, xintercept = mean(dailySteps$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), col = "blue")
 ```
 
 ```
@@ -109,6 +105,7 @@ contains the maximum number of steps?
   
 
 ```r
+### Find the interval with the maximum number of steps
 maxInterval <- averageSteps[averageSteps$average == max(averageSteps$average), 1]
 print(maxInterval)
 ```
@@ -162,11 +159,7 @@ dailyStepsNoNA <- ddply(activityNoNA, .(date), summarise, steps = sum(steps))
 
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
 ### line for the median
-qplot(steps, data = dailyStepsNoNA) + 
-  geom_vline(data = dailyStepsNoNA, xintercept = mean(dailyStepsNoNA$steps, na.rm = TRUE), 
-             col = "green") +
-  geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), 
-             col = "blue")
+qplot(steps, data = dailyStepsNoNA) + geom_vline(data = dailyStepsNoNA, xintercept = mean(dailyStepsNoNA$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), col = "blue")
 ```
 
 ```
@@ -194,7 +187,7 @@ print(medianDiff)
 ## [1] 1.188679
 ```
   
-The difference in the means, before and after removing missing values is 0 and the difference in medians is 1.1886792.
+The difference in the means, before and after removing missing values, is 0 and the difference in medians is 1.1886792.
 
 ## Are there differences in activity patterns between weekdays and weekends?
   
