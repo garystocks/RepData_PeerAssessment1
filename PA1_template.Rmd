@@ -49,7 +49,7 @@ dailySteps <- ddply(activity, .(date), summarise, steps = sum(steps))
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
 ### line for the median
 
-qplot(steps, data = dailySteps, xlab = "Total steps per day", ylab = "Frequency")  + geom_vline(data = dailySteps, xintercept = mean(dailySteps$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), col = "blue")
+qplot(steps, data = dailySteps, xlab = "Total steps per day", ylab = "Number of days")  + geom_vline(data = dailySteps, xintercept = mean(dailySteps$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailySteps, xintercept = median(dailySteps$steps, na.rm = TRUE), col = "blue")
 
 ```
   
