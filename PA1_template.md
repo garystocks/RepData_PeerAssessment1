@@ -7,7 +7,7 @@ output:
 
 # Introduction
 
-This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.  
+This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals throughout the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.  
 
 # Data File
 
@@ -62,7 +62,7 @@ activity$date <- as.Date(activity$date, "%Y-%m-%d")
   
 
 ```r
-### Create a new data frame with the the total number of steps per day
+### Create a new data frame with the total number of steps per day
 dailySteps <- ddply(activity, .(date), summarise, steps = sum(steps))
 
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
@@ -84,7 +84,7 @@ qplot(steps, data = dailySteps, xlab = "Total steps per day", ylab = "Number of 
 ## What is the average daily activity pattern?
   
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis)
-and the average number of steps taken, averaged across all days (y-axis)
+and the average number of steps taken, averaged across all days (y-axis).
   
 
 ```r
@@ -118,7 +118,7 @@ The interval with the maximum number of steps is 835.
   
 ## Imputing missing values
   
-Replace missing values with the average for that interval over all the days
+Replace missing values with the average for that interval over all the days.
   
 
 ```r
@@ -150,7 +150,7 @@ for (i in 1:nrow(activityNoNA)) {
 }
 ```
   
-Explore whether there is an impact from missing values
+Explore whether there is an impact from missing values.
   
 
 ```r
@@ -159,7 +159,7 @@ dailyStepsNoNA <- ddply(activityNoNA, .(date), summarise, steps = sum(steps))
 
 ### Plot a histogram with a green vertical line for the mean and a blue vertical
 ### line for the median
-qplot(steps, data = dailyStepsNoNA) + geom_vline(data = dailyStepsNoNA, xintercept = mean(dailyStepsNoNA$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), col = "blue")
+qplot(steps, data = dailyStepsNoNA, xlab = "Total steps per day", ylab = "Number of days") + geom_vline(data = dailyStepsNoNA, xintercept = mean(dailyStepsNoNA$steps, na.rm = TRUE), col = "green") + geom_vline(data = dailyStepsNoNA, xintercept = median(dailyStepsNoNA$steps, na.rm = TRUE), col = "blue")
 ```
 
 ```
